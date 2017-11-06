@@ -30,18 +30,18 @@ class Crypto {
 	 * @return string
 	 */
 	public static function encrypt( $value ) {
-		$nonceSize = openssl_cipher_iv_length( static::METHOD );
-        $nonce = openssl_random_pseudo_bytes( $nonceSize );
+		$nonce_size = openssl_cipher_iv_length( static::METHOD );
+		$nonce      = openssl_random_pseudo_bytes( $nonce_size );
 
-        $ciphertext = openssl_encrypt(
-            $value,
-            static::METHOD,
-            static::key(),
-            OPENSSL_RAW_DATA,
-            $nonce
-        );
+		$ciphertext = openssl_encrypt(
+			$value,
+			static::METHOD,
+			static::key(),
+			OPENSSL_RAW_DATA,
+			$nonce
+		);
 
-        return base64_encode( $nonce.$ciphertext );
+		return base64_encode( $nonce . $ciphertext );
 	}
 
 	/**
@@ -57,17 +57,17 @@ class Crypto {
 			return '';
 		}
 
-        $nonceSize = openssl_cipher_iv_length( static::METHOD );
-        $nonce = mb_substr( $value, 0, $nonceSize, '8bit' );
-        $ciphertext = mb_substr( $value, $nonceSize, null, '8bit' );
+		$nonce_size = openssl_cipher_iv_length( static::METHOD );
+		$nonce      = mb_substr( $value, 0, $nonce_size, '8bit' );
+		$ciphertext = mb_substr( $value, $nonce_size, null, '8bit' );
 
-        $plaintext = openssl_decrypt(
-            $ciphertext,
-            static::METHOD,
-            static::key(),
-            OPENSSL_RAW_DATA,
-            $nonce
-        );
+		$plaintext = openssl_decrypt(
+			$ciphertext,
+			static::METHOD,
+			static::key(),
+			OPENSSL_RAW_DATA,
+			$nonce
+		);
 
 		return $plaintext;
 	}
