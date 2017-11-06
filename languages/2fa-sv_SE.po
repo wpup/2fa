@@ -1,0 +1,68 @@
+# Copyright (C) 2017 2fa
+# This file is distributed under the same license as the 2fa package.
+msgid ""
+msgstr ""
+"Project-Id-Version: 2fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;"
+"_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;"
+"esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.4\n"
+"Last-Translator: \n"
+"Language: sv_SE\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: ../src/class-authentication.php:52
+msgid "<strong>ERROR</strong>: Invalid 2FA code"
+msgstr "<strong>FEL</strong>: Felaktig 2FA-kod"
+
+#: ../src/class-authentication.php:59
+msgid "<strong>ERROR</strong>: Invalid 2FA secret"
+msgstr "<strong>FEL</strong>: Felaktig 2FA-hemlighet"
+
+#: ../src/class-authentication.php:64
+msgid "<strong>ERROR</strong>: The 2FA code is incorrect"
+msgstr "<strong>FEL</strong>: 2FA-koden är felaktig"
+
+#: ../src/class-authentication.php:76
+msgid ""
+"If you don't have Two-Factory Authenticator enabled for your account, leave "
+"this field empty."
+msgstr ""
+"Om du inte har tvåfaktorautentisering aktiverat för ditt konto, lämna det "
+"här fältet tomt."
+
+#: ../src/class-authentication.php:77
+msgid "2FA Code"
+msgstr "2FA-kod"
+
+#: ../src/class-user.php:34
+msgid "Two-Factory Authentication Management"
+msgstr "Tvåfaktorautentiseringshantering"
+
+#: ../src/class-user.php:37
+msgid "Enable"
+msgstr "Aktivera"
+
+#: ../src/class-user.php:44, ../src/class-user.php:47
+msgid "QR Barcode"
+msgstr "QR Streckkod"
+
+#: ../src/class-user.php:46
+msgid "Open up your 2FA mobile app and scan the following QR barcode:"
+msgstr "Öppna din 2FA mobilapp och skanna följande QR-streckkod:"
+
+#: ../src/class-user.php:49
+msgid ""
+"If your 2FA mobile app does not support QR barcodes, enter in the following "
+"number:"
+msgstr "Om din 2FA mobilapp inte stöder QR-streckkoder, ange följande nummer:"
