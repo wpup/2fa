@@ -27,6 +27,6 @@ class User_Test extends \WP_UnitTestCase {
 		wp_set_current_user( 0 );
 
 		$this->assertSame( 'on', get_user_option( '2fa_enabled', $user_id ) );
-		$this->assertSame( 'XXX', get_user_option( '2fa_secret', $user_id ) );
+		$this->assertNotEmpty( get_user_option( '2fa_secret', $user_id ) );
 	}
 }

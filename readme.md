@@ -12,6 +12,10 @@ Two-factor Authentication for WordPress. Based on [Google2FA](https://github.com
 composer require wpup/2fa
 ```
 
+## Constants
+
+You can define a custom crypto key by defining `2FA_KEY` Default use is `AUTH_KEY` or empty string.
+
 ## License
 
 MIT © [Fredrik Forsmo](https://github.com/frozzare)

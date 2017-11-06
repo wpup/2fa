@@ -59,6 +59,8 @@ class Authentication {
 			return new WP_Error( '2fa_invalid_secret', __( '<strong>ERROR</strong>: Invalid 2FA secret' ) );
 		}
 
+		$secret = Crypto::decrypt( $secret );
+
 		// Bail if the 2FA code is incorrect.
 		if ( ! $this->google2fa->verifyKey( $secret, trim( $_POST['2fa_code'] ) ) ) {
 			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The 2FA code is incorrect', '2fa' ) );

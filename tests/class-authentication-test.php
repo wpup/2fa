@@ -1,6 +1,7 @@
 <?php
 
 use WPUP\TwoFactory\Authentication;
+use WPUP\TwoFactory\Crypto;
 
 class Authentication_Test extends \WP_UnitTestCase {
 	public function setUp() {
@@ -32,7 +33,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'Invalid 2FA secret' ) );
 
 		// Invalid 2FA code.
-		update_user_option( $user_id, '2fa_secret', 'ADUMJO5634NPDEKW' );
+		update_user_option( $user_id, '2fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'The 2FA code is incorrect' ) );
 	}

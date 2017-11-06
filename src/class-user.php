@@ -29,7 +29,7 @@ class User {
 	public function fields( $user ) {
 		$hidden = trim( get_user_option( '2fa_enabled', $user->ID, true ) ) !== 'on';
 		$secret = get_user_option( '2fa_secret', $user->ID );
-		$secret = empty( $secret ) ? $this->google2fa->generateSecretKey() : $secret;
+		$secret = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
 		?>
 		<h3><?php echo esc_html__( 'Two-Factory Authentication Management', '2fa' ); ?></h3>
 		<table class="form-table">
@@ -94,7 +94,13 @@ class User {
 
 		foreach ( $fields as $field ) {
 			if ( ! empty( $_POST[$field] ) ) {
-				update_user_option( $user_id, $field, sanitize_text_field( $_POST[$field] ) );
+				$value = sanitize_text_field( $_POST[$field] );
+
+				if ( $field === '2fa_secret' ) {
+					$value = Crypto::encrypt( $value );
+				}
+
+				update_user_option( $user_id, $field, $value );
 			}
 		}
 	}
