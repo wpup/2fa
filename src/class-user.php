@@ -33,9 +33,7 @@ class User {
 	public function column_value( $value, $column, $user_id ) {
 		switch ( $column ) {
 			case '2fa':
-				return trim( get_user_option( '2fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( '2fa_secret', $user_id ) )
-					? esc_html__( 'Yes', '2fa' )
-					: esc_html__( 'No', '2fa' );
+				return $this->enabled() ? esc_html__( 'Yes', '2fa' ) : esc_html__( 'No', '2fa' );
 			default:
 				break;
 		}
@@ -57,12 +55,20 @@ class User {
 	}
 
 	/**
+	 * Is 2FA enabled or not?
+	 *
+	 * @return bool
+	 */
+	protected function enabled() {
+		return trim( get_user_option( '2fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( '2fa_secret', $user_id ) );
+	}
+
+	/**
 	 * Output user fields for 2FA.
 	 *
 	 * @param  \WP_User $user
 	 */
 	public function fields( $user ) {
-		$hidden = trim( get_user_option( '2fa_enabled', $user->ID ) ) !== 'on';
 		$secret = get_user_option( '2fa_secret', $user->ID );
 		$secret = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
 		?>
@@ -75,15 +81,17 @@ class User {
 					<?php wp_nonce_field( '2fa_update', '2fa_nonce' ); ?>
 				</td>
 			</tr>
+			<?php if ( ! $this->enabled() ): ?>
 			<tr>
-				<th class="2fa_qr <?php echo $hidden ? 'hidden' : ''; ?>"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
-				<td class="2fa_qr <?php echo $hidden ? 'hidden' : ''; ?>">
+				<th class="2fa_qr hidden"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
+				<td class="2fa_qr hidden">
 					<p><?php echo esc_html__( 'Open up your 2FA mobile app and scan the following QR barcode:', '2fa' ); ?></p>
 					<img src="<?php echo esc_attr( $this->get_qr_code_url( $user, $secret ) ); ?>" alt="<?php echo esc_html__( 'QR Barcode', '2fa' ); ?>" />
 					<input type="hidden" name="2fa_secret" id="2fa_secret" value="<?php echo esc_attr( $secret ); ?>" />
 					<p><?php echo esc_html__( 'If your 2FA mobile app does not support QR barcodes, enter in the following number:', '2fa' ); ?><code><?php echo esc_html( $secret ); ?></code></p>
 				</td>
 			</tr>
+			<?php endif; ?>
 		</table>
 		<?php
 	}
@@ -144,6 +152,8 @@ class User {
 				}
 
 				update_user_option( $user_id, $field, $value );
+			} else {
+				delete_user_option( $user_id, $field );
 			}
 		}
 	}
