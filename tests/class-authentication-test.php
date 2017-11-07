@@ -2,6 +2,7 @@
 
 use WPUP\TwoFactory\Authentication;
 use WPUP\TwoFactory\Crypto;
+use PragmaRX\Recovery\Recovery;
 
 class Authentication_Test extends \WP_UnitTestCase {
 	public function setUp() {
@@ -36,5 +37,35 @@ class Authentication_Test extends \WP_UnitTestCase {
 		update_user_option( $user_id, '2fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'The 2FA code is incorrect' ) );
+	}
+
+	public function test_authenticate_recovery_codes() {
+		$user_id = $this->factory->user->create();
+		$user = get_user_by( 'ID', $user_id );
+		$codes = ( new Recovery )->toArray();
+
+		update_user_option( $user_id, '2fa_enabled', 'on' );
+		update_user_option( $user_id, '2fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
+		update_user_option( $user_id, '2fa_recovery_codes', maybe_serialize( array_map( 'wp_hash_password', $codes ) ) );
+
+		$this->assertSame( 8, count( $codes ) );
+
+		$_POST['2fa_code'] = 'XXXXXXXXXX-XXXXXXXXXX';
+		$output = $this->class->authenticate( $user, $user->user_login, '' );
+		$this->assertNotFalse( strpos( $output->get_error_message(), 'The recovery code is incorrect' ) );
+
+		$_POST['2fa_code'] = array_shift( $codes );
+		$output = $this->class->authenticate( $user, $user->user_login, '' );
+		$this->assertSame( $user->ID, $output->ID );
+
+		$hashes = get_user_option( '2fa_recovery_codes', $user_id );
+		$hashes = maybe_unserialize( $hashes );
+		$this->assertSame( 7, count( $hashes ) );
+
+		foreach ( $hashes as $index => $hash ) {
+			if ( wp_check_password( $_POST['2fa_code'], $hash, $user->ID ) ) {
+				$this->assertFalse( true );
+			}
+		}
 	}
 }

@@ -106,7 +106,10 @@ class User {
 				<td class="2fa-hidden hidden">
 					<ul>
 					<?php foreach ( $this->recovery->toArray() as $code ): ?>
-						<li><?php echo esc_html( $code ); ?></li>
+						<li>
+							<?php echo esc_html( $code ); ?>
+							<input type="hidden" value="<?php echo esc_attr( wp_hash_password( $code ) ); ?>" name="2fa_recovery_codes[]" />
+						</li>
 					<?php endforeach; ?>
 					</ul>
 				</td>
@@ -161,11 +164,12 @@ class User {
 		$fields = [
 			'2fa_enabled',
 			'2fa_secret',
+			'2fa_recovery_codes'
 		];
 
 		foreach ( $fields as $field ) {
 			if ( ! empty( $_POST[$field] ) ) {
-				$value = sanitize_text_field( $_POST[$field] );
+				$value = sanitize_text_field( maybe_serialize( $_POST[$field] ) );
 
 				if ( $field === '2fa_secret' ) {
 					$value = Crypto::encrypt( $value );

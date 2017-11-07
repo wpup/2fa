@@ -52,6 +52,37 @@ class Authentication {
 			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: Invalid 2FA code' ) );
 		}
 
+		$code = trim( $_POST['2fa_code'] );
+
+		// If the 2FA code is a recovery code we should check that instead of verify Google 2FA code.
+		if ( strpos( $code, '-' ) !== false && strlen( $code ) === 21 ) {
+			if ( ! ( $recovery_codes = get_user_option( '2fa_recovery_codes', $user->ID ) ) ) {
+				return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
+			}
+
+			$recovery_codes   = maybe_unserialize( $recovery_codes );
+			$recovery_success = false;
+
+			foreach ( $recovery_codes as $index => $hash ) {
+				if ( wp_check_password( $code, $hash, $user->ID ) ) {
+					$recovery_success = true;
+					unset( $recovery_codes[$index] );
+				}
+			}
+
+			// Update recovery codes if recovery code is found.
+			if ( $recovery_success ) {
+				$recovery_success = update_user_option( $user->ID, '2fa_recovery_codes', maybe_serialize( array_values( $recovery_codes ) ) );
+			}
+
+			// If all recovery checks are true return the user.
+			if ( $recovery_success ) {
+				return $user;
+			}
+
+			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
+		}
+
 		$secret = get_user_option( '2fa_secret', $user->ID );
 
 		// Bail if the 2FA secret is incorrect.
@@ -62,7 +93,7 @@ class Authentication {
 		$secret = Crypto::decrypt( $secret );
 
 		// Bail if the 2FA code is incorrect.
-		if ( ! $this->google2fa->verifyKey( $secret, trim( $_POST['2fa_code'] ) ) ) {
+		if ( ! $this->google2fa->verifyKey( $secret, $code ) ) {
 			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The 2FA code is incorrect', '2fa' ) );
 		}
 
