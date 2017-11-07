@@ -104,12 +104,18 @@ class User {
 			</tr>
 			<?php endif; ?>
 			<?php if ( ! $this->enabled( $user->ID ) || $new_codes ): ?>
+			<?php
+				$codes = $this->recovery->setChars( 5 )->setCount( 10 )->toArray();
+				if ( $new_codes ) {
+					update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( $codes ) );
+				}
+			?>
 			<tr>
 				<th class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>"><label for="two_fa_recovery"><?php echo esc_html__( 'Recovery codes', '2fa' ); ?></label></th>
 				<td class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>">
 					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes.', '2fa' ); ?></p>
 					<ul id="two_fa_recovery_codes">
-					<?php foreach ( $this->recovery->setChars( 5 )->setCount( 10 )->toArray() as $code ): ?>
+					<?php foreach ( $codes as $code ): ?>
 						<li>
 							<?php echo esc_html( $code ); ?>
 							<input type="hidden" value="<?php echo esc_attr( password_hash( $code, PASSWORD_DEFAULT ) ); ?>" name="two_fa_recovery_codes[]" />
