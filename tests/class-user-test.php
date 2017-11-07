@@ -32,7 +32,7 @@ class User_Test extends \WP_UnitTestCase {
 	}
 
 	public function test_save_fields() {
-		$user_id = $this->factory->user->create( ['user_login' => 'test', 'role' => 'administrator'] );
+		$user_id = $this->factory->user->create( ['user_login' => 'test', 'role' => 'contributor'] );
 
 		wp_set_current_user( $user_id );
 

@@ -33,7 +33,7 @@ class User {
 	public function column_value( $value, $column, $user_id ) {
 		switch ( $column ) {
 			case '2fa':
-				return $this->enabled() ? esc_html__( 'Yes', '2fa' ) : esc_html__( 'No', '2fa' );
+				return $this->enabled( $user_id ) ? esc_html__( 'Yes', '2fa' ) : esc_html__( 'No', '2fa' );
 			default:
 				break;
 		}
@@ -57,9 +57,11 @@ class User {
 	/**
 	 * Is 2FA enabled or not?
 	 *
+	 * @param  int $user_id
+	 *
 	 * @return bool
 	 */
-	protected function enabled() {
+	protected function enabled( $user_id ) {
 		return trim( get_user_option( '2fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( '2fa_secret', $user_id ) );
 	}
 
@@ -81,7 +83,7 @@ class User {
 					<?php wp_nonce_field( '2fa_update', '2fa_nonce' ); ?>
 				</td>
 			</tr>
-			<?php if ( ! $this->enabled() ): ?>
+			<?php if ( ! $this->enabled( $user->ID ) ): ?>
 			<tr>
 				<th class="2fa_qr hidden"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
 				<td class="2fa_qr hidden">
