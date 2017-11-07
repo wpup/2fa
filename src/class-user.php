@@ -108,7 +108,7 @@ class User {
 					<?php foreach ( $this->recovery->toArray() as $code ): ?>
 						<li>
 							<?php echo esc_html( $code ); ?>
-							<input type="hidden" value="<?php echo esc_attr( wp_hash_password( $code ) ); ?>" name="2fa_recovery_codes[]" />
+							<input type="hidden" value="<?php echo esc_attr( password_hash( $code, PASSWORD_DEFAULT ) ); ?>" name="2fa_recovery_codes[]" />
 						</li>
 					<?php endforeach; ?>
 					</ul>

@@ -64,7 +64,7 @@ class Authentication {
 			$recovery_success = false;
 
 			foreach ( $recovery_codes as $index => $hash ) {
-				if ( wp_check_password( $code, $hash, $user->ID ) ) {
+				if ( password_verify( $code, $hash ) ) {
 					$recovery_success = true;
 					unset( $recovery_codes[$index] );
 				}

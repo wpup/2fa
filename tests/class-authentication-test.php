@@ -46,7 +46,9 @@ class Authentication_Test extends \WP_UnitTestCase {
 
 		update_user_option( $user_id, '2fa_enabled', 'on' );
 		update_user_option( $user_id, '2fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
-		update_user_option( $user_id, '2fa_recovery_codes', maybe_serialize( array_map( 'wp_hash_password', $codes ) ) );
+		update_user_option( $user_id, '2fa_recovery_codes', maybe_serialize( array_map( function ($code) {
+			return password_hash($code, PASSWORD_DEFAULT);
+		}, $codes ) ) );
 
 		$this->assertSame( 8, count( $codes ) );
 
@@ -63,7 +65,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$this->assertSame( 7, count( $hashes ) );
 
 		foreach ( $hashes as $index => $hash ) {
-			if ( wp_check_password( $_POST['2fa_code'], $hash, $user->ID ) ) {
+			if ( password_verify( $_POST['2fa_code'], $hash ) ) {
 				$this->assertFalse( true );
 			}
 		}
