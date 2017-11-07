@@ -22,12 +22,47 @@ class User {
 	}
 
 	/**
+	 * Add 2FA column value.
+	 *
+	 * @param  mixed  $value
+	 * @param  string $column
+	 * @param  int    $user_id
+	 *
+	 * @return mixed
+	 */
+	public function column_value( $value, $column, $user_id ) {
+		switch ( $column ) {
+			case '2fa':
+				return trim( get_user_option( '2fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( '2fa_secret', $user_id ) )
+					? esc_html__( 'Yes', '2fa' )
+					: esc_html__( 'No', '2fa' );
+			default:
+				break;
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Add 2FA column.
+	 *
+	 * @param  array $column
+	 *
+	 * @return array
+	 */
+	public function columns( $column ) {
+		$column['2fa'] = esc_html__( '2FA', '2fa' );
+
+		return $column;
+	}
+
+	/**
 	 * Output user fields for 2FA.
 	 *
 	 * @param  \WP_User $user
 	 */
 	public function fields( $user ) {
-		$hidden = trim( get_user_option( '2fa_enabled', $user->ID, true ) ) !== 'on';
+		$hidden = trim( get_user_option( '2fa_enabled', $user->ID ) ) !== 'on';
 		$secret = get_user_option( '2fa_secret', $user->ID );
 		$secret = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
 		?>
@@ -62,7 +97,15 @@ class User {
 	 * @return string
 	 */
 	protected function get_qr_code_url( $user, $secret ) {
-		return $this->google2fa->getQRCodeInline(
+		if ( function_exists( 'imagecreatetruecolor' ) ) {
+			return $this->google2fa->getQRCodeInline(
+				get_bloginfo( 'name' ),
+				$user->user_email,
+				$secret
+			);
+		}
+
+		return $this->google2fa->getQRCodeGoogleUrl(
 			get_bloginfo( 'name' ),
 			$user->user_email,
 			$secret
@@ -113,6 +156,8 @@ class User {
 		add_action( 'show_user_profile', [$this, 'fields'] );
 		add_action( 'personal_options_update', [$this, 'save_fields'] );
 		add_action( 'edit_user_profile_update', [$this, 'save_fields'] );
+		add_filter( 'manage_users_columns', [$this, 'columns'] );
+		add_filter( 'manage_users_custom_column', [$this, 'column_value'], 10, 3 );
 	}
 
 	/**

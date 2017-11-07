@@ -59,7 +59,9 @@ class Plugin {
 		$locale = function_exists( 'get_user_local' ) ? get_user_local() : get_locale();
 		$locale = apply_filters( 'plugin_locale', $locale, '2fa' );
 		load_textdomain( '2fa', WP_LANG_DIR . '/2fa/2fa-' . $locale . '.mo' );
-		load_textdomain( '2fa', PAPI_PLUGIN_DIR . '../languages/2fa-' . $locale . '.mo' );
+		$mu_dir = trailingslashit( sprintf( '%s/%s/src', WPMU_PLUGIN_DIR, basename( dirname( __DIR__ ) ) ) );
+		$mu_dir = is_dir( $mu_dir ) ? $mu_dir : trailingslashit( __DIR__ );
+		load_textdomain( '2fa', $mu_dir . '../languages/2fa-' . $locale . '.mo' );
 	}
 
 	/**

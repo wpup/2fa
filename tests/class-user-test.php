@@ -13,6 +13,24 @@ class User_Test extends \WP_UnitTestCase {
 		unset( $this->class );
 	}
 
+	public function test_columns() {
+		$columns = $this->class->columns( [] );
+		$this->assertSame( ['2fa' => '2FA'], $columns );
+	}
+
+	public function test_column_value() {
+		$user_id = $this->factory->user->create();
+
+		$value = $this->class->column_value( '', '2fa', $user_id );
+		$this->assertSame( 'No', $value );
+
+		update_user_option( $user_id, '2fa_enabled', 'on' );
+		update_user_option( $user_id, '2fa_secret', 'on' );
+
+		$value = $this->class->column_value( '', '2fa', $user_id );
+		$this->assertSame( 'Yes', $value );
+	}
+
 	public function test_save_fields() {
 		$user_id = $this->factory->user->create( ['user_login' => 'test', 'role' => 'administrator'] );
 

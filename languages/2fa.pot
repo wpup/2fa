@@ -21,34 +21,46 @@ msgstr ""
 msgid "<strong>ERROR</strong>: Invalid 2FA secret"
 msgstr ""
 
-#: ../src/class-authentication.php:64
+#: ../src/class-authentication.php:66
 msgid "<strong>ERROR</strong>: The 2FA code is incorrect"
 msgstr ""
 
-#: ../src/class-authentication.php:76
+#: ../src/class-authentication.php:78
 msgid "If you don't have Two-Factory Authenticator enabled for your account, leave this field empty."
 msgstr ""
 
-#: ../src/class-authentication.php:77
+#: ../src/class-authentication.php:79
 msgid "2FA Code"
 msgstr ""
 
-#: ../src/class-user.php:34
+#: ../src/class-user.php:37
+msgid "Yes"
+msgstr ""
+
+#: ../src/class-user.php:38
+msgid "No"
+msgstr ""
+
+#: ../src/class-user.php:54
+msgid "2FA"
+msgstr ""
+
+#: ../src/class-user.php:69
 msgid "Two-Factory Authentication Management"
 msgstr ""
 
-#: ../src/class-user.php:37
+#: ../src/class-user.php:72
 msgid "Enable"
 msgstr ""
 
-#: ../src/class-user.php:44, ../src/class-user.php:47
+#: ../src/class-user.php:79, ../src/class-user.php:82
 msgid "QR Barcode"
 msgstr ""
 
-#: ../src/class-user.php:46
+#: ../src/class-user.php:81
 msgid "Open up your 2FA mobile app and scan the following QR barcode:"
 msgstr ""
 
-#: ../src/class-user.php:49
+#: ../src/class-user.php:84
 msgid "If your 2FA mobile app does not support QR barcodes, enter in the following number:"
 msgstr ""
