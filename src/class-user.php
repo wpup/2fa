@@ -104,7 +104,8 @@ class User {
 			<tr>
 				<th class="2fa-hidden hidden"><label for="2fa_recovery"><?php echo esc_html__( 'Recovery codes', '2fa' ); ?></label></th>
 				<td class="2fa-hidden hidden">
-					<ul>
+					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes.', '2fa' ); ?></p>
+					<ul style="background: #ddd; padding: 10px;">
 					<?php foreach ( $this->recovery->toArray() as $code ): ?>
 						<li>
 							<?php echo esc_html( $code ); ?>
@@ -112,6 +113,7 @@ class User {
 						</li>
 					<?php endforeach; ?>
 					</ul>
+					<p><strong><?php echo esc_html__( 'Put these in a safe spot.', '2fa' ); ?></strong> <?php echo esc_html__( 'If you lose your device and don\'t have the recovery codes you will lose access to your account.', '2fa' ); ?></p>
 				</td>
 			</tr>
 			<?php endif; ?>
