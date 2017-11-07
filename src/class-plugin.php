@@ -30,6 +30,22 @@ class Plugin {
 	protected function __construct() {
 		$this->load_textdomain();
 		$this->setup_classes();
+		$this->setup_hooks();
+	}
+
+	/**
+	 * Remove 2FA plugin from updates since it's match another 2FA plugin.
+	 *
+	 * @param  object $value
+	 *
+	 * @return void
+	 */
+	public function filter_plugin_updates( $value ) {
+		if ( isset( $value->response['2fa/plugin.php'] ) ) {
+			unset( $value->response['2fa/plugin.php'] );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -58,5 +74,12 @@ class Plugin {
 			new Assets;
 			new User;
 		}
+	}
+
+	/**
+	 * Setup WordPress hooks.
+	 */
+	protected function setup_hooks() {
+		add_filter( 'site_transient_update_plugins', [$this, 'filter_plugin_updates'] );
 	}
 }
