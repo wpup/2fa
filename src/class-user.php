@@ -109,7 +109,7 @@ class User {
 				<td class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>">
 					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes.', '2fa' ); ?></p>
 					<ul id="two_fa_recovery_codes">
-					<?php foreach ( $this->recovery->setChars(5)->setCount(10)->toArray() as $code ): ?>
+					<?php foreach ( $this->recovery->setChars( 5 )->setCount( 10 )->toArray() as $code ): ?>
 						<li>
 							<?php echo esc_html( $code ); ?>
 							<input type="hidden" value="<?php echo esc_attr( password_hash( $code, PASSWORD_DEFAULT ) ); ?>" name="two_fa_recovery_codes[]" />
