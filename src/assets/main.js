@@ -1,12 +1,12 @@
 (function ($) {
 
     // Hide or show QR barcode if enabled checkbox is checked.
-    $('#2fa_enabled').on('change', function () {
+    $('#two_fa_enabled').on('change', function () {
         if (!$(this).is(':checked')) {
-            $('.2fa-hidden').hide();
+            $('.two-fa-hidden').hide();
             return;
         }
-        $('.2fa-hidden').toggle();
+        $('.two-fa-hidden').toggle();
     });
 
 })(window.jQuery);
