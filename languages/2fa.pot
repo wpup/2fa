@@ -17,50 +17,78 @@ msgstr ""
 msgid "<strong>ERROR</strong>: Invalid 2FA code"
 msgstr ""
 
-#: ../src/class-authentication.php:59
+#: ../src/class-authentication.php:60, ../src/class-authentication.php:83
+msgid "<strong>ERROR</strong>: The recovery code is incorrect"
+msgstr ""
+
+#: ../src/class-authentication.php:90
 msgid "<strong>ERROR</strong>: Invalid 2FA secret"
 msgstr ""
 
-#: ../src/class-authentication.php:66
+#: ../src/class-authentication.php:97
 msgid "<strong>ERROR</strong>: The 2FA code is incorrect"
 msgstr ""
 
-#: ../src/class-authentication.php:78
+#: ../src/class-authentication.php:109
 msgid "If you don't have Two-Factory Authenticator enabled for your account, leave this field empty."
 msgstr ""
 
-#: ../src/class-authentication.php:79
+#: ../src/class-authentication.php:110
 msgid "2FA Code"
 msgstr ""
 
-#: ../src/class-user.php:37
+#: ../src/class-user.php:44
 msgid "Yes"
 msgstr ""
 
-#: ../src/class-user.php:38
+#: ../src/class-user.php:44
 msgid "No"
 msgstr ""
 
-#: ../src/class-user.php:54
+#: ../src/class-user.php:60
 msgid "2FA"
 msgstr ""
 
-#: ../src/class-user.php:69
+#: ../src/class-user.php:86
 msgid "Two-Factory Authentication Management"
 msgstr ""
 
-#: ../src/class-user.php:72
+#: ../src/class-user.php:89
 msgid "Enable"
 msgstr ""
 
-#: ../src/class-user.php:79, ../src/class-user.php:82
+#: ../src/class-user.php:97, ../src/class-user.php:100
 msgid "QR Barcode"
 msgstr ""
 
-#: ../src/class-user.php:81
+#: ../src/class-user.php:99
 msgid "Open up your 2FA mobile app and scan the following QR barcode:"
 msgstr ""
 
-#: ../src/class-user.php:84
+#: ../src/class-user.php:102
 msgid "If your 2FA mobile app does not support QR barcodes, enter in the following number:"
+msgstr ""
+
+#: ../src/class-user.php:108
+msgid "Recovery codes"
+msgstr ""
+
+#: ../src/class-user.php:110
+msgid "Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes."
+msgstr ""
+
+#: ../src/class-user.php:119
+msgid "Put these in a safe spot."
+msgstr ""
+
+#: ../src/class-user.php:119
+msgid "If you lose your device and don't have the recovery codes you will lose access to your account."
+msgstr ""
+
+#: ../src/class-user.php:124, ../src/class-user.php:126
+msgid "Generate new recovery codes"
+msgstr ""
+
+#: ../src/class-user.php:127
+msgid "When you generate new recovery codes, you must download or print the new codes. Your old codes won't work anymore."
 msgstr ""

@@ -124,7 +124,7 @@ class User {
 				<th><label><?php echo esc_html__( 'Generate new recovery codes', '2fa' ); ?></label></th>
 				<td>
 					<p><a href="?two_fa_new_recovery_codes=true#two_fa_recovery_codes" class="button"><?php echo esc_html__( 'Generate new recovery codes', '2fa' ); ?></a></p>
-					<p class="description"><?php echo esc_html__( 'When you generate new recovery codes, you must download or print the new codes. Your old codes won’t work anymore.', '2fa' ); ?></p>
+					<p class="description"><?php echo esc_html__( 'When you generate new recovery codes, you must download or print the new codes. Your old codes won\'t work anymore.', '2fa' ); ?></p>
 				</td>
 			</tr>
 			<?php endif; ?>
