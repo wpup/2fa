@@ -3,6 +3,7 @@
 namespace WPUP\TwoFactory;
 
 use PragmaRX\Google2FA\Google2FA;
+use PragmaRX\Recovery\Recovery;
 
 class User {
 
@@ -12,6 +13,13 @@ class User {
 	 * @var \PragmaRX\Google2FA\Google2FA
 	 */
 	protected $google2fa;
+
+	/**
+	 * Recovery instance.
+	 *
+	 * @var \PragmaRX\Recovery\Recovery
+	 */
+	protected $recovery;
 
 	/**
 	 * User constructor.
@@ -85,12 +93,22 @@ class User {
 			</tr>
 			<?php if ( ! $this->enabled( $user->ID ) ): ?>
 			<tr>
-				<th class="2fa_qr hidden"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
-				<td class="2fa_qr hidden">
+				<th class="2fa-hidden hidden"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
+				<td class="2fa-hidden hidden">
 					<p><?php echo esc_html__( 'Open up your 2FA mobile app and scan the following QR barcode:', '2fa' ); ?></p>
 					<img src="<?php echo esc_attr( $this->get_qr_code_url( $user, $secret ) ); ?>" alt="<?php echo esc_html__( 'QR Barcode', '2fa' ); ?>" />
 					<input type="hidden" name="2fa_secret" id="2fa_secret" value="<?php echo esc_attr( $secret ); ?>" />
 					<p><?php echo esc_html__( 'If your 2FA mobile app does not support QR barcodes, enter in the following number:', '2fa' ); ?><code><?php echo esc_html( $secret ); ?></code></p>
+				</td>
+			</tr>
+			<tr>
+				<th class="2fa-hidden hidden"><label for="2fa_recovery"><?php echo esc_html__( 'Recovery codes', '2fa' ); ?></label></th>
+				<td class="2fa-hidden hidden">
+					<ul>
+					<?php foreach ( $this->recovery->toArray() as $code ): ?>
+						<li><?php echo esc_html( $code ); ?></li>
+					<?php endforeach; ?>
+					</ul>
 				</td>
 			</tr>
 			<?php endif; ?>
@@ -177,5 +195,6 @@ class User {
 	 */
 	protected function setup_properties() {
 		$this->google2fa = new Google2FA;
+		$this->recovery = new Recovery;
 	}
 }
