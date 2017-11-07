@@ -55,7 +55,7 @@ class Authentication {
 		$code = trim( $_POST['2fa_code'] );
 
 		// If the 2FA code is a recovery code we should check that instead of verify Google 2FA code.
-		if ( strpos( $code, '-' ) !== false && strlen( $code ) === 21 ) {
+		if ( strpos( $code, '-' ) !== false && strlen( $code ) === 11 ) {
 			if ( ! ( $recovery_codes = get_user_option( '2fa_recovery_codes', $user->ID ) ) ) {
 				return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
 			}

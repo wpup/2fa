@@ -42,7 +42,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 	public function test_authenticate_recovery_codes() {
 		$user_id = $this->factory->user->create();
 		$user = get_user_by( 'ID', $user_id );
-		$codes = ( new Recovery )->toArray();
+		$codes = ( new Recovery )->setChars(5)->setCount(10)->toArray();
 
 		update_user_option( $user_id, '2fa_enabled', 'on' );
 		update_user_option( $user_id, '2fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
@@ -50,9 +50,9 @@ class Authentication_Test extends \WP_UnitTestCase {
 			return password_hash($code, PASSWORD_DEFAULT);
 		}, $codes ) ) );
 
-		$this->assertSame( 8, count( $codes ) );
+		$this->assertSame( 10, count( $codes ) );
 
-		$_POST['2fa_code'] = 'XXXXXXXXXX-XXXXXXXXXX';
+		$_POST['2fa_code'] = 'XXXXX-XXXXX';
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'The recovery code is incorrect' ) );
 
@@ -62,7 +62,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 
 		$hashes = get_user_option( '2fa_recovery_codes', $user_id );
 		$hashes = maybe_unserialize( $hashes );
-		$this->assertSame( 7, count( $hashes ) );
+		$this->assertSame( 9, count( $hashes ) );
 
 		foreach ( $hashes as $index => $hash ) {
 			if ( password_verify( $_POST['2fa_code'], $hash ) ) {

@@ -24,8 +24,8 @@ class User_Test extends \WP_UnitTestCase {
 		$value = $this->class->column_value( '', '2fa', $user_id );
 		$this->assertSame( 'No', $value );
 
-		update_user_option( $user_id, '2fa_enabled', 'on' );
-		update_user_option( $user_id, '2fa_secret', 'on' );
+		update_user_option( $user_id, 'two_fa_enabled', 'on' );
+		update_user_option( $user_id, 'two_fa_secret', 'on' );
 
 		$value = $this->class->column_value( '', '2fa', $user_id );
 		$this->assertSame( 'Yes', $value );
@@ -36,15 +36,15 @@ class User_Test extends \WP_UnitTestCase {
 
 		wp_set_current_user( $user_id );
 
-		$_POST['2fa_nonce'] = wp_create_nonce( '2fa_update' );
-		$_POST['2fa_enabled'] = 'on';
-		$_POST['2fa_secret'] = 'XXX';
+		$_POST['two_fa_nonce'] = wp_create_nonce( 'two_fa_update' );
+		$_POST['two_fa_enabled'] = 'on';
+		$_POST['two_fa_secret'] = 'XXX';
 
 		$this->class->save_fields( $user_id );
 
 		wp_set_current_user( 0 );
 
-		$this->assertSame( 'on', get_user_option( '2fa_enabled', $user_id ) );
-		$this->assertNotSame( 'XXX', get_user_option( '2fa_secret', $user_id ) );
+		$this->assertSame( 'on', get_user_option( 'two_fa_enabled', $user_id ) );
+		$this->assertNotSame( 'XXX', get_user_option( 'two_fa_secret', $user_id ) );
 	}
 }
