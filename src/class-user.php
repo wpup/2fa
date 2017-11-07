@@ -164,7 +164,7 @@ class User {
 		$fields = [
 			'2fa_enabled',
 			'2fa_secret',
-			'2fa_recovery_codes'
+			'2fa_recovery_codes',
 		];
 
 		foreach ( $fields as $field ) {
@@ -199,6 +199,6 @@ class User {
 	 */
 	protected function setup_properties() {
 		$this->google2fa = new Google2FA;
-		$this->recovery = new Recovery;
+		$this->recovery  = new Recovery;
 	}
 }
