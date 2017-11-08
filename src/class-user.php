@@ -107,7 +107,9 @@ class User {
 			<?php
 				$codes = $this->recovery->setChars( 5 )->setCount( 10 )->toArray();
 				if ( $new_codes ) {
-					update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( $codes ) );
+					update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( function ( $code ) {
+						return password_hash( $code, PASSWORD_DEFAULT );
+					}, $codes ) );
 				}
 			?>
 			<tr>
