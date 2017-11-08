@@ -19,7 +19,8 @@
   "keywords": [
     "2fa",
     "two-factor",
-    "authentication"
+    "authentication",
+    "wordpress"
   ],
   "require": {
     "php": "^7.0",
