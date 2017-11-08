@@ -1,4 +1,4 @@
-# 2FA
+# Two-factor Authentication for WordPress
 
 [![Build Status](https://travis-ci.org/wpup/2fa.svg?branch=master)](https://travis-ci.org/wpup/2fa)
 
