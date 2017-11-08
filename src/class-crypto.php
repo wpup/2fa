@@ -15,11 +15,11 @@ class Crypto {
 	 * @return string
 	 */
 	protected static function key() {
-		if ( ! defined( '2FA_KEY' ) ) {
+		if ( ! defined( 'TWO_FA_KEY' ) ) {
 			return defined( 'AUTH_KEY' ) ? AUTH_KEY : '';
 		}
 
-		return constant( '2FA_KEY' );
+		return constant( 'TWO_FA_KEY' );
 	}
 
 	/**

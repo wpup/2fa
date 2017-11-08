@@ -20,6 +20,13 @@ class Assets {
 	}
 
 	/**
+	 * Enqueue CSS.
+	 */
+	public function enqueue_css() {
+		wp_enqueue_style( '2fa-main', $this->plugin_url . 'assets/main.css', false, null );
+	}
+
+	/**
 	 * Enqueue JavaScript.
 	 */
 	public function enqueue_js() {
@@ -32,6 +39,7 @@ class Assets {
 	 * Setup WordPress hooks.
 	 */
 	protected function setup_hooks() {
+		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_css'] );
 		add_action( 'admin_enqueue_scripts', [$this, 'enqueue_js'] );
 	}
 

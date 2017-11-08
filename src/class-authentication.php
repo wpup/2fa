@@ -43,27 +43,58 @@ class Authentication {
 		}
 
 		// Bail if 2FA is not enabled.
-		if ( trim( get_user_option( '2fa_enabled', $user->ID ) !== 'on' ) ) {
+		if ( trim( get_user_option( 'two_fa_enabled', $user->ID ) !== 'on' ) ) {
 			return $old_user;
 		}
 
 		// Bail if the 2FA code is empty.
-		if ( empty( $_POST['2fa_code'] ) ) {
-			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: Invalid 2FA code' ) );
+		if ( empty( $_POST['two_fa_code'] ) ) {
+			return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: Invalid 2FA code', '2fa' ) );
 		}
 
-		$secret = get_user_option( '2fa_secret', $user->ID );
+		$code = trim( $_POST['two_fa_code'] );
+
+		// If the 2FA code is a recovery code we should check that instead of verify Google 2FA code.
+		if ( strpos( $code, '-' ) !== false && strlen( $code ) === 11 ) {
+			if ( ! ( $recovery_codes = get_user_option( 'two_fa_recovery_codes', $user->ID ) ) ) {
+				return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
+			}
+
+			$recovery_codes   = maybe_unserialize( $recovery_codes );
+			$recovery_success = false;
+
+			foreach ( $recovery_codes as $index => $hash ) {
+				if ( password_verify( $code, $hash ) ) {
+					$recovery_success = true;
+					unset( $recovery_codes[$index] );
+				}
+			}
+
+			// Update recovery codes if recovery code is found.
+			if ( $recovery_success ) {
+				$recovery_success = update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( array_values( $recovery_codes ) ) );
+			}
+
+			// If all recovery checks are true return the user.
+			if ( $recovery_success ) {
+				return $user;
+			}
+
+			return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
+		}
+
+		$secret = get_user_option( 'two_fa_secret', $user->ID );
 
 		// Bail if the 2FA secret is incorrect.
 		if ( empty( $secret ) ) {
-			return new WP_Error( '2fa_invalid_secret', __( '<strong>ERROR</strong>: Invalid 2FA secret' ) );
+			return new WP_Error( 'two_fa_invalid_secret', __( '<strong>ERROR</strong>: Invalid 2FA secret', '2fa' ) );
 		}
 
 		$secret = Crypto::decrypt( $secret );
 
 		// Bail if the 2FA code is incorrect.
-		if ( ! $this->google2fa->verifyKey( $secret, trim( $_POST['2fa_code'] ) ) ) {
-			return new WP_Error( '2fa_invalid_code', __( '<strong>ERROR</strong>: The 2FA code is incorrect', '2fa' ) );
+		if ( ! $this->google2fa->verifyKey( $secret, $code ) ) {
+			return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: The 2FA code is incorrect', '2fa' ) );
 		}
 
 		return $user;
@@ -75,9 +106,9 @@ class Authentication {
 	public function login_form() {
 		?>
 		<p>
-			<label title="<?php echo esc_html__( 'If you don\'t have Two-Factory Authenticator enabled for your account, leave this field empty.' ); ?>">
-				<?php echo esc_html__( '2FA Code' ); ?><span id="2fa-info"></span> <small>(Leave blank if not setup)</small>
-				<input type="text" name="2fa_code" id="2fa_code" class="input" size="20" style="ime-mode: inactive;" autocomplete="off">
+			<label title="<?php echo esc_html__( 'If you don\'t have Two-Factory Authenticator enabled for your account, leave this field empty.', '2fa' ); ?>">
+				<?php echo esc_html__( '2FA Code', '2fa' ); ?><span id="2fa-info"></span> <small>(Leave blank if not setup)</small>
+				<input type="text" name="two_fa_code" id="two_fa_code" class="input" size="20" style="ime-mode: inactive;" autocomplete="off">
 			</label>
 		</p>
 		<?php

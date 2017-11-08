@@ -1,0 +1,20 @@
+#two_fa_recovery_codes {
+  background: #ddd;
+  padding: 10px 20px;
+}
+
+#two_fa_recovery_codes li {
+  display: inline-block;
+  width: 35%;
+  line-height: 1.6;
+  text-align: left;
+}
+
+#two_fa_recovery_codes li:before {
+  position: relative;
+  top: -3px;
+  margin-right: 10px;
+  font-size: 10px;
+  color: #23282d;
+  content: "\25CF";
+}

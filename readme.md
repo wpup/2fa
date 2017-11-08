@@ -16,7 +16,7 @@ composer require wpup/2fa
 
 ## Constants
 
-You can define a custom crypto key by defining `2FA_KEY` Default value is `AUTH_KEY` value or empty string.
+You can define a custom crypto key by defining `TWO_FA_KEY` Default value is `AUTH_KEY` value or empty string.
 
 ## License
 

@@ -3,6 +3,7 @@
 namespace WPUP\TwoFactory;
 
 use PragmaRX\Google2FA\Google2FA;
+use PragmaRX\Recovery\Recovery;
 
 class User {
 
@@ -12,6 +13,13 @@ class User {
 	 * @var \PragmaRX\Google2FA\Google2FA
 	 */
 	protected $google2fa;
+
+	/**
+	 * Recovery instance.
+	 *
+	 * @var \PragmaRX\Recovery\Recovery
+	 */
+	protected $recovery;
 
 	/**
 	 * User constructor.
@@ -62,7 +70,7 @@ class User {
 	 * @return bool
 	 */
 	protected function enabled( $user_id ) {
-		return trim( get_user_option( '2fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( '2fa_secret', $user_id ) );
+		return trim( get_user_option( 'two_fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( 'two_fa_secret', $user_id ) );
 	}
 
 	/**
@@ -71,26 +79,60 @@ class User {
 	 * @param  \WP_User $user
 	 */
 	public function fields( $user ) {
-		$secret = get_user_option( '2fa_secret', $user->ID );
-		$secret = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
+		$secret    = get_user_option( 'two_fa_secret', $user->ID );
+		$secret    = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
+		$new_codes = isset( $_GET['two_fa_new_recovery_codes'] );
 		?>
 		<h3><?php echo esc_html__( 'Two-Factory Authentication Management', '2fa' ); ?></h3>
 		<table class="form-table">
 			<tr>
-				<th><label for="2fa_enabled"><?php echo esc_html__( 'Enable' ); ?></label></th>
+				<th><label for="two_fa_enabled"><?php echo esc_html__( 'Enable' ); ?></label></th>
 				<td>
-					<input type="checkbox" name="2fa_enabled" id="2fa_enabled" value="on" <?php checked( 'on', get_user_option( '2fa_enabled', $user->ID ), true ); ?> />
-					<?php wp_nonce_field( '2fa_update', '2fa_nonce' ); ?>
+					<input type="checkbox" name="two_fa_enabled" id="two_fa_enabled" value="on" <?php checked( 'on', get_user_option( 'two_fa_enabled', $user->ID ), true ); ?> />
+					<?php wp_nonce_field( 'two_fa_update', 'two_fa_nonce' ); ?>
 				</td>
 			</tr>
 			<?php if ( ! $this->enabled( $user->ID ) ): ?>
 			<tr>
-				<th class="2fa_qr hidden"><label for="2fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
-				<td class="2fa_qr hidden">
+				<th class="two-fa-hidden hidden"><label for="two_fa_qr"><?php echo esc_html__( 'QR Barcode', '2fa' ); ?></label></th>
+				<td class="two-fa-hidden hidden">
 					<p><?php echo esc_html__( 'Open up your 2FA mobile app and scan the following QR barcode:', '2fa' ); ?></p>
 					<img src="<?php echo esc_attr( $this->get_qr_code_url( $user, $secret ) ); ?>" alt="<?php echo esc_html__( 'QR Barcode', '2fa' ); ?>" />
-					<input type="hidden" name="2fa_secret" id="2fa_secret" value="<?php echo esc_attr( $secret ); ?>" />
+					<input type="hidden" name="two_fa_secret" id="two_fa_secret" value="<?php echo esc_attr( $secret ); ?>" />
 					<p><?php echo esc_html__( 'If your 2FA mobile app does not support QR barcodes, enter in the following number:', '2fa' ); ?><code><?php echo esc_html( $secret ); ?></code></p>
+				</td>
+			</tr>
+			<?php endif; ?>
+			<?php if ( ! $this->enabled( $user->ID ) || $new_codes ): ?>
+			<?php
+				$codes = $this->recovery->setChars( 5 )->setCount( 10 )->toArray();
+				if ( $new_codes ) {
+					update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( function ( $code ) {
+						return password_hash( $code, PASSWORD_DEFAULT );
+					}, $codes ) );
+				}
+			?>
+			<tr>
+				<th class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>"><label for="two_fa_recovery"><?php echo esc_html__( 'Recovery codes', '2fa' ); ?></label></th>
+				<td class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>">
+					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes.', '2fa' ); ?></p>
+					<ul id="two_fa_recovery_codes">
+					<?php foreach ( $codes as $code ): ?>
+						<li>
+							<?php echo esc_html( $code ); ?>
+							<input type="hidden" value="<?php echo esc_attr( password_hash( $code, PASSWORD_DEFAULT ) ); ?>" name="two_fa_recovery_codes[]" />
+						</li>
+					<?php endforeach; ?>
+					</ul>
+					<p><strong><?php echo esc_html__( 'Put these in a safe spot.', '2fa' ); ?></strong> <?php echo esc_html__( 'If you lose your device and don\'t have the recovery codes you will lose access to your account.', '2fa' ); ?></p>
+				</td>
+			</tr>
+			<?php else: ?>
+			<tr>
+				<th><label><?php echo esc_html__( 'Generate new recovery codes', '2fa' ); ?></label></th>
+				<td>
+					<p><a href="?two_fa_new_recovery_codes=true#two_fa_recovery_codes" class="button"><?php echo esc_html__( 'Generate new recovery codes', '2fa' ); ?></a></p>
+					<p class="description"><?php echo esc_html__( 'When you generate new recovery codes, you must download or print the new codes. Your old codes won\'t work anymore.', '2fa' ); ?></p>
 				</td>
 			</tr>
 			<?php endif; ?>
@@ -136,20 +178,21 @@ class User {
 		}
 
 		// Bail if bad nonce.
-		if ( empty( $_POST['2fa_nonce'] ) || ! wp_verify_nonce( $_POST['2fa_nonce'], '2fa_update' ) ) {
+		if ( empty( $_POST['two_fa_nonce'] ) || ! wp_verify_nonce( $_POST['two_fa_nonce'], 'two_fa_update' ) ) {
 			return false;
 		}
 
 		$fields = [
-			'2fa_enabled',
-			'2fa_secret',
+			'two_fa_enabled',
+			'two_fa_secret',
+			'two_fa_recovery_codes',
 		];
 
 		foreach ( $fields as $field ) {
 			if ( ! empty( $_POST[$field] ) ) {
-				$value = sanitize_text_field( $_POST[$field] );
+				$value = sanitize_text_field( maybe_serialize( $_POST[$field] ) );
 
-				if ( $field === '2fa_secret' ) {
+				if ( $field === 'two_fa_secret' ) {
 					$value = Crypto::encrypt( $value );
 				}
 
@@ -177,5 +220,6 @@ class User {
 	 */
 	protected function setup_properties() {
 		$this->google2fa = new Google2FA;
+		$this->recovery  = new Recovery;
 	}
 }
