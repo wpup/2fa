@@ -15,7 +15,7 @@
   verbose="true"
   >
   <testsuites>
-    <testsuite name="Conauth Test Suite">
+    <testsuite name="2FA Test Suite">
       <directory suffix=".php">./tests/</directory>
       <exclude>./tests/fixtures</exclude>
     </testsuite>
