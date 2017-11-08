@@ -1,6 +1,6 @@
 <?php
 
-namespace WPUP\TwoFactory;
+namespace WPUP\TwoFactor;
 
 use PragmaRX\Google2FA\Google2FA;
 use WP_Error;
@@ -106,7 +106,7 @@ class Authentication {
 	public function login_form() {
 		?>
 		<p>
-			<label title="<?php echo esc_html__( 'If you don\'t have Two-Factory Authenticator enabled for your account, leave this field empty.', '2fa' ); ?>">
+			<label title="<?php echo esc_html__( 'If you don\'t have Two-Factor Authenticator enabled for your account, leave this field empty.', '2fa' ); ?>">
 				<?php echo esc_html__( '2FA Code', '2fa' ); ?><span id="2fa-info"></span> <small>(Leave blank if not setup)</small>
 				<input type="text" name="two_fa_code" id="two_fa_code" class="input" size="20" style="ime-mode: inactive;" autocomplete="off">
 			</label>

@@ -19,5 +19,5 @@ if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
  * Bootstrap plugin.
  */
 add_action( 'plugins_loaded', function () {
-    WPUP\TwoFactory\Plugin::instance();
+    WPUP\TwoFactor\Plugin::instance();
 } );

@@ -1,6 +1,6 @@
 <?php
 
-use WPUP\TwoFactory\Crypto;
+use WPUP\TwoFactor\Crypto;
 
 class Crypto_Test extends \WP_UnitTestCase {
 	public function setUp() {

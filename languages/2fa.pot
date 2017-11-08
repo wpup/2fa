@@ -30,7 +30,7 @@ msgid "<strong>ERROR</strong>: The 2FA code is incorrect"
 msgstr ""
 
 #: ../src/class-authentication.php:109
-msgid "If you don't have Two-Factory Authenticator enabled for your account, leave this field empty."
+msgid "If you don't have Two-Factor Authenticator enabled for your account, leave this field empty."
 msgstr ""
 
 #: ../src/class-authentication.php:110
@@ -50,7 +50,7 @@ msgid "2FA"
 msgstr ""
 
 #: ../src/class-user.php:86
-msgid "Two-Factory Authentication Management"
+msgid "Two-Factor Authentication Management"
 msgstr ""
 
 #: ../src/class-user.php:89
@@ -69,26 +69,26 @@ msgstr ""
 msgid "If your 2FA mobile app does not support QR barcodes, enter in the following number:"
 msgstr ""
 
-#: ../src/class-user.php:108
+#: ../src/class-user.php:116
 msgid "Recovery codes"
 msgstr ""
 
-#: ../src/class-user.php:110
-msgid "Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes."
-msgstr ""
-
-#: ../src/class-user.php:119
-msgid "Put these in a safe spot."
-msgstr ""
-
-#: ../src/class-user.php:119
-msgid "If you lose your device and don't have the recovery codes you will lose access to your account."
-msgstr ""
-
-#: ../src/class-user.php:124, ../src/class-user.php:126
-msgid "Generate new recovery codes"
+#: ../src/class-user.php:118
+msgid "Recovery codes are used to access your account in the event you cannot receive two-factor authentication codes."
 msgstr ""
 
 #: ../src/class-user.php:127
+msgid "Put these in a safe spot."
+msgstr ""
+
+#: ../src/class-user.php:127
+msgid "If you lose your device and don't have the recovery codes you will lose access to your account."
+msgstr ""
+
+#: ../src/class-user.php:132, ../src/class-user.php:134
+msgid "Generate new recovery codes"
+msgstr ""
+
+#: ../src/class-user.php:135
 msgid "When you generate new recovery codes, you must download or print the new codes. Your old codes won't work anymore."
 msgstr ""

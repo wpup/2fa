@@ -1,6 +1,6 @@
 <?php
 
-namespace WPUP\TwoFactory;
+namespace WPUP\TwoFactor;
 
 use PragmaRX\Google2FA\Google2FA;
 use PragmaRX\Recovery\Recovery;
@@ -83,7 +83,7 @@ class User {
 		$secret    = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
 		$new_codes = isset( $_GET['two_fa_new_recovery_codes'] );
 		?>
-		<h3><?php echo esc_html__( 'Two-Factory Authentication Management', '2fa' ); ?></h3>
+		<h3><?php echo esc_html__( 'Two-Factor Authentication Management', '2fa' ); ?></h3>
 		<table class="form-table">
 			<tr>
 				<th><label for="two_fa_enabled"><?php echo esc_html__( 'Enable' ); ?></label></th>
@@ -115,7 +115,7 @@ class User {
 			<tr>
 				<th class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>"><label for="two_fa_recovery"><?php echo esc_html__( 'Recovery codes', '2fa' ); ?></label></th>
 				<td class="two-fa-hidden <?php echo esc_attr( $new_codes ? '' : 'hidden' ); ?>">
-					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factory authentication codes.', '2fa' ); ?></p>
+					<p><?php echo esc_html__( 'Recovery codes are used to access your account in the event you cannot receive two-factor authentication codes.', '2fa' ); ?></p>
 					<ul id="two_fa_recovery_codes">
 					<?php foreach ( $codes as $code ): ?>
 						<li>

@@ -39,7 +39,7 @@ msgstr "<strong>FEL</strong>: 2FA-koden är felaktig"
 
 #: ../src/class-authentication.php:109
 msgid ""
-"If you don't have Two-Factory Authenticator enabled for your account, leave "
+"If you don't have Two-Factor Authenticator enabled for your account, leave "
 "this field empty."
 msgstr ""
 "Om du inte har tvåfaktorautentisering aktiverat för ditt konto, lämna det "
@@ -62,7 +62,7 @@ msgid "2FA"
 msgstr "2FA"
 
 #: ../src/class-user.php:86
-msgid "Two-Factory Authentication Management"
+msgid "Two-Factor Authentication Management"
 msgstr "Tvåfaktorautentiseringshantering"
 
 #: ../src/class-user.php:89
@@ -83,23 +83,23 @@ msgid ""
 "number:"
 msgstr "Om din 2FA mobilapp inte stöder QR-streckkoder, ange följande nummer:"
 
-#: ../src/class-user.php:108
+#: ../src/class-user.php:116
 msgid "Recovery codes"
 msgstr "Återställningskoder"
 
-#: ../src/class-user.php:110
+#: ../src/class-user.php:118
 msgid ""
 "Recovery codes are used to access your account in the event you cannot "
-"receive two-factory authentication codes."
+"receive two-factor authentication codes."
 msgstr ""
 "Återställningskoder används för att komma åt ditt konto om du inte kan få "
 "två fabriks autentiseringskoder."
 
-#: ../src/class-user.php:119
+#: ../src/class-user.php:127
 msgid "Put these in a safe spot."
 msgstr "Spara dem på en säker plats."
 
-#: ../src/class-user.php:119
+#: ../src/class-user.php:127
 msgid ""
 "If you lose your device and don't have the recovery codes you will lose "
 "access to your account."
@@ -107,11 +107,11 @@ msgstr ""
 "Om du förlorar din enhet och inte har återställningskoderna förlorar du "
 "åtkomst till ditt konto."
 
-#: ../src/class-user.php:124, ../src/class-user.php:126
+#: ../src/class-user.php:132, ../src/class-user.php:134
 msgid "Generate new recovery codes"
 msgstr "Skapa nya återställningskoder"
 
-#: ../src/class-user.php:127
+#: ../src/class-user.php:135
 msgid ""
 "When you generate new recovery codes, you must download or print the new "
 "codes. Your old codes won't work anymore."

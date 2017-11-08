@@ -1,20 +1,20 @@
 <?php
 
-namespace WPUP\TwoFactory;
+namespace WPUP\TwoFactor;
 
 class Plugin {
 
 	/**
 	 * Authentication instance.
 	 *
-	 * @var \WPUP\TwoFactory\Plugin
+	 * @var \WPUP\TwoFactor\Plugin
 	 */
 	protected static $instance;
 
 	/**
 	 * Get plugin instance.
 	 *
-	 * @return \WPUP\TwoFactory\Plugin
+	 * @return \WPUP\TwoFactor\Plugin
 	 */
 	public static function instance() {
 		if ( ! isset( static::$instance ) ) {

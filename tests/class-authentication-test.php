@@ -1,7 +1,7 @@
 <?php
 
-use WPUP\TwoFactory\Authentication;
-use WPUP\TwoFactory\Crypto;
+use WPUP\TwoFactor\Authentication;
+use WPUP\TwoFactor\Crypto;
 use PragmaRX\Recovery\Recovery;
 
 class Authentication_Test extends \WP_UnitTestCase {

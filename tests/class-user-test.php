@@ -1,6 +1,6 @@
 <?php
 
-use WPUP\TwoFactory\User;
+use WPUP\TwoFactor\User;
 
 class User_Test extends \WP_UnitTestCase {
 	public function setUp() {
