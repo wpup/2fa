@@ -5,7 +5,7 @@
  * Description: Two-factor Authentication for WordPress.
  * Author: Fredrik Forsmo
  * Author URI: https://frozzare.com
- * Version: 1.0.0
+ * Version: 1.0.1
  * Plugin URI: https://github.com/wpup/2fa
  * Textdomain: 2fa
  * Domain Path: /languages/
