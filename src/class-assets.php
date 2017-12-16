@@ -1,6 +1,6 @@
 <?php
 
-namespace WPUP\TwoFactory;
+namespace WPUP\TwoFactor;
 
 class Assets {
 
