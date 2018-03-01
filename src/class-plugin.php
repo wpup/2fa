@@ -5,7 +5,7 @@ namespace WPUP\TwoFactor;
 class Plugin {
 
 	/**
-	 * Authentication instance.
+	 * Plugin instance.
 	 *
 	 * @var \WPUP\TwoFactor\Plugin
 	 */
