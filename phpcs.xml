@@ -28,7 +28,7 @@
   </rule>
 
 
-  <rule ref="WordPress.XSS.EscapeOutput" />
+  <rule ref="WordPress.Security.EscapeOutput" />
   <rule ref="WordPress.PHP.StrictComparisons" />
   <rule ref="WordPress.PHP.StrictInArray" />
 </ruleset>
