@@ -70,7 +70,7 @@ class User {
 	 * @return bool
 	 */
 	protected function enabled( $user_id ) {
-		return trim( get_user_option( 'two_fa_enabled', $user_id ) ) === 'on' && ! empty( get_user_option( 'two_fa_secret', $user_id ) );
+		return trim( two_fa_get_user_option( 'two_fa_enabled', $user_id ) ) === 'on' && ! empty( two_fa_get_user_option( 'two_fa_secret', $user_id ) );
 	}
 
 	/**
@@ -79,7 +79,7 @@ class User {
 	 * @param  \WP_User $user
 	 */
 	public function fields( $user ) {
-		$secret    = get_user_option( 'two_fa_secret', $user->ID );
+		$secret    = two_fa_get_user_option( 'two_fa_secret', $user->ID );
 		$secret    = empty( $secret ) ? $this->google2fa->generateSecretKey() : Crypto::decrypt( $secret );
 		$new_codes = isset( $_GET['two_fa_new_recovery_codes'] );
 		?>

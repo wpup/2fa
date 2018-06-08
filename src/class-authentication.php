@@ -43,7 +43,7 @@ class Authentication {
 		}
 
 		// Bail if 2FA is not enabled.
-		if ( trim( get_user_option( 'two_fa_enabled', $user->ID ) !== 'on' ) ) {
+		if ( trim( two_fa_get_user_option( 'two_fa_enabled', $user->ID ) !== 'on' ) ) {
 			return $old_user;
 		}
 
@@ -56,7 +56,7 @@ class Authentication {
 
 		// If the 2FA code is a recovery code we should check that instead of verify Google 2FA code.
 		if ( strpos( $code, '-' ) !== false && strlen( $code ) === 11 ) {
-			if ( ! ( $recovery_codes = get_user_option( 'two_fa_recovery_codes', $user->ID ) ) ) {
+			if ( ! ( $recovery_codes = two_fa_get_user_option( 'two_fa_recovery_codes', $user->ID ) ) ) {
 				return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
 			}
 
@@ -83,7 +83,7 @@ class Authentication {
 			return new WP_Error( 'two_fa_invalid_code', __( '<strong>ERROR</strong>: The recovery code is incorrect', '2fa' ) );
 		}
 
-		$secret = get_user_option( 'two_fa_secret', $user->ID );
+		$secret = two_fa_get_user_option( 'two_fa_secret', $user->ID );
 
 		// Bail if the 2FA secret is incorrect.
 		if ( empty( $secret ) ) {

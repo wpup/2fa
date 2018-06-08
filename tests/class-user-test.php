@@ -44,7 +44,7 @@ class User_Test extends \WP_UnitTestCase {
 
 		wp_set_current_user( 0 );
 
-		$this->assertSame( 'on', get_user_option( 'two_fa_enabled', $user_id ) );
-		$this->assertNotSame( 'XXX', get_user_option( 'two_fa_secret', $user_id ) );
+		$this->assertSame( 'on', two_fa_get_user_option( 'two_fa_enabled', $user_id ) );
+		$this->assertNotSame( 'XXX', two_fa_get_user_option( 'two_fa_secret', $user_id ) );
 	}
 }

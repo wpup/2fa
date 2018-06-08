@@ -60,7 +60,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertSame( $user->ID, $output->ID );
 
-		$hashes = get_user_option( 'two_fa_recovery_codes', $user_id );
+		$hashes = two_fa_get_user_option( 'two_fa_recovery_codes', $user_id );
 		$hashes = maybe_unserialize( $hashes );
 		$this->assertSame( 9, count( $hashes ) );
 
