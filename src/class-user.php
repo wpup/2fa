@@ -109,7 +109,7 @@ class User {
 				if ( $new_codes ) {
 					update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( array_map( function ( $code ) {
 						return password_hash( $code, PASSWORD_DEFAULT );
-					}, $codes ) ) );
+					}, $codes ) ), true );
 				}
 			?>
 			<tr>
@@ -196,9 +196,9 @@ class User {
 					$value = Crypto::encrypt( $value );
 				}
 
-				update_user_option( $user_id, $field, $value );
+				update_user_option( $user_id, $field, $value, true );
 			} else {
-				delete_user_option( $user_id, $field );
+				delete_user_option( $user_id, $field, true );
 			}
 		}
 	}

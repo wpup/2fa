@@ -72,7 +72,7 @@ class Authentication {
 
 			// Update recovery codes if recovery code is found.
 			if ( $recovery_success ) {
-				$recovery_success = update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( array_values( $recovery_codes ) ) );
+				$recovery_success = update_user_option( $user->ID, 'two_fa_recovery_codes', maybe_serialize( array_values( $recovery_codes ) ), true );
 			}
 
 			// If all recovery checks are true return the user.

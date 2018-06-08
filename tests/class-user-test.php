@@ -24,8 +24,8 @@ class User_Test extends \WP_UnitTestCase {
 		$value = $this->class->column_value( '', '2fa', $user_id );
 		$this->assertSame( 'No', $value );
 
-		update_user_option( $user_id, 'two_fa_enabled', 'on' );
-		update_user_option( $user_id, 'two_fa_secret', 'on' );
+		update_user_option( $user_id, 'two_fa_enabled', 'on', true );
+		update_user_option( $user_id, 'two_fa_secret', 'on', true );
 
 		$value = $this->class->column_value( '', '2fa', $user_id );
 		$this->assertSame( 'Yes', $value );

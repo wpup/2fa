@@ -4,7 +4,7 @@
  * Get user option without site check.
  *
  * @param  string $key
- * @param  int    $user_id
+ * @param  int    $user
  *
  * @return mxied
  */

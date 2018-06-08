@@ -24,7 +24,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$this->assertSame( $user, $output );
 
 		// Invalid 2FA code.
-		update_user_option( $user_id, 'two_fa_enabled', 'on' );
+		update_user_option( $user_id, 'two_fa_enabled', 'on', true );
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'Invalid 2FA code' ) );
 
@@ -34,7 +34,7 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'Invalid 2FA secret' ) );
 
 		// Invalid 2FA code.
-		update_user_option( $user_id, 'two_fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
+		update_user_option( $user_id, 'two_fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ), true );
 		$output = $this->class->authenticate( $user, $user->user_login, '' );
 		$this->assertNotFalse( strpos( $output->get_error_message(), 'The 2FA code is incorrect' ) );
 	}
@@ -44,11 +44,11 @@ class Authentication_Test extends \WP_UnitTestCase {
 		$user = get_user_by( 'ID', $user_id );
 		$codes = ( new Recovery )->setChars(5)->setCount(10)->toArray();
 
-		update_user_option( $user_id, 'two_fa_enabled', 'on' );
-		update_user_option( $user_id, 'two_fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ) );
+		update_user_option( $user_id, 'two_fa_enabled', 'on', true );
+		update_user_option( $user_id, 'two_fa_secret', Crypto::encrypt( 'ADUMJO5634NPDEKW' ), true );
 		update_user_option( $user_id, 'two_fa_recovery_codes', maybe_serialize( array_map( function ($code) {
 			return password_hash($code, PASSWORD_DEFAULT);
-		}, $codes ) ) );
+		}, $codes ) ), true );
 
 		$this->assertSame( 10, count( $codes ) );
 
