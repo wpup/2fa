@@ -17,5 +17,5 @@ function two_fa_get_user_option( $key, $user ) {
 		return false;
 	}
 
-	return $user->get_option( $key );
+	return $user->get( $key );
 }
