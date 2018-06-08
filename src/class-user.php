@@ -149,16 +149,28 @@ class User {
 	 * @return string
 	 */
 	protected function get_qr_code_url( $user, $secret ) {
+		$title = '';
+
+		if ( is_multisite() ) {
+			if ( $network = get_network() ) {
+				$title = $network->site_name;
+			}
+		}
+
+		if ( empty( $title ) ) {
+			$title = get_bloginfo( 'name' );
+		}
+
 		if ( function_exists( 'imagecreatetruecolor' ) ) {
 			return $this->google2fa->getQRCodeInline(
-				get_bloginfo( 'name' ),
+				$title,
 				$user->user_email,
 				$secret
 			);
 		}
 
 		return $this->google2fa->getQRCodeGoogleUrl(
-			get_bloginfo( 'name' ),
+			$title,
 			$user->user_email,
 			$secret
 		);
