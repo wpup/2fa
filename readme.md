@@ -1,6 +1,8 @@
 # Two-factor Authentication for WordPress
 
 [![Build Status](https://travis-ci.org/wpup/2fa.svg?branch=master)](https://travis-ci.org/wpup/2fa)
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 
 Two-factor Authentication for WordPress. Based on [Google2FA](https://github.com/antonioribeiro/google2fa) and [Recovery](https://github.com/antonioribeiro/recovery).
 
